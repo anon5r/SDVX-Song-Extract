@@ -212,7 +212,7 @@ def extractSongsMetadata(songPaths, gameFolder):
     
     metadatum[9001] = {
         "title": "SOUND VOLTEX Tutorial",
-        "artist": "SOND VOLTEX Team",
+        "artist": "SOUND VOLTEX Team",
         "genre": "Tutorial",
         # "title_sort": "さうんどぼるてっくすちゅーとりある",
         # "artist_sort": "さうんどぼるてっくすちーむ",
