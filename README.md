@@ -9,7 +9,7 @@ extracted each music are included cover images, album name by versions, track nu
 ## Require
 
 ```
-pip install bs4
+pip install -r reqiorements.txt
 ```
 
 ## How to use
