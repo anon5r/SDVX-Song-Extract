@@ -54,7 +54,7 @@ def CLI():
     # Fetch game folder path
     while True:
         gameFolder = input("Insert path to SDVX folder > ")
-        if os.path.exists(gameFolder) and "soundvoltex.dll" in os.listdir(gameFolder):
+        if os.path.exists(gameFolder) and "soundvoltex.dll" in os.listdir(gameFolder + "\\modules"):
             print("OK, that path looks legit, yesssss")
             break
         else:
@@ -86,7 +86,7 @@ def getSongPaths(gameFolder):
     return songPaths
 
 # Convert and-or copy songs and place them in music directory
-def extractSongs(songPaths, format, metadatas):
+def extractSongs(songPaths, format, metadatum):
     outputFolder = os.path.join(outputDir, format)
     if not os.path.exists(outputFolder):
         os.makedirs(outputFolder)
@@ -118,10 +118,10 @@ def extractSongs(songPaths, format, metadatas):
     for songPath in songPaths:
         filename = os.path.basename(songPath)
         songId = filename.split("_")[0]
-        if (int(songId) not in metadatas):
-            print("Skipping %s, because removed from music_db.xml" % songId)
+        if (int(songId) not in metadatum):
+            print("Skipping %s, because removed from music_db.xml <= %s" % (songId, filename))
             continue
-        meta = metadatas[int(songId)]
+        meta = metadatum[int(songId)]
         outputFile = os.path.join(outputFolder, VERSIONS[meta["version"]], filename[:-3] + format)
         overwrite = False
         # overwrite = "&" in meta["title"] or "&" in meta["artist"]
@@ -132,8 +132,8 @@ def extractSongs(songPaths, format, metadatas):
             if not bpm == meta["bpm_max"]:
                 bpm = meta["bpm_max"]
             
-            title = cmdEscape(meta["title"])
-            artist = cmdEscape(meta["artist"])
+            title = meta["title"]
+            artist = meta["artist"]
 
 
             if filename.endswith(".2dx"):
@@ -154,14 +154,15 @@ def extractSongs(songPaths, format, metadatas):
             exec_cmd = cmd % (
                 songPath,
                 jacketPath,
-                title, artist,
+                cmdEscape(title),
+                cmdEscape(artist),
                 VERSIONS[meta["version"]], meta["genre"],
                 int(meta["release_year"]),
                 int(songId), int(meta["version"]), bpm,
                 outputFile,
                 )
             try:
-                subprocess.run(exec_cmd, shell=True, check=True) \
+                subprocess.run(exec_cmd, shell=False, check=True) \
                 if cmd else shutil.copy2(songPath, outputFile)
             except subprocess.CalledProcessError as e:
                 print("\n===================================\n" \
@@ -276,7 +277,7 @@ def cmdEscape(str):
     if "Windows" == platform.system():
         # For PowerSehll 
         map = [
-            ['"', '\`"'],
+            ['"', '`"'],
             # ['&', '\\&'],
         ]
     else:
