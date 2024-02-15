@@ -266,6 +266,7 @@ def fixBrokenChars(name):
         ['\u9f95', '€'],
         ['\u9477', 'ゔ'],
         ['\u76E5', '⚙'],
+        ['\u58b8', ' ']
 
     ]
     for m in map:
@@ -277,14 +278,14 @@ def cmdEscape(str):
     if "Windows" == platform.system():
         # For PowerSehll 
         map = [
-            ['"', '`"'],
-            # ['&', '\\&'],
+            ['"', '\\"'],
+            ['&', '&'],
         ]
     else:
         # Linux
         map = [
-            ['"', '\"'],
-            ['$', '\$']
+            ['"', '\\"'],
+            ['$', '\\$']
         ]
     for repl in map:
         str = str.replace(repl[0], repl[1])
