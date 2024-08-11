@@ -229,7 +229,8 @@ def extractSongsMetadata(songPaths, gameFolder):
 # ref: https://gist.github.com/hannahherbig/d67c2bfefcca207640c001e0ddd5e000
 def fixBrokenChars(name):
     map = [
-        # ['\u014d', '驪'],
+        ['\u00d7', '×'],
+        ['\u1fe6', 'ῦ'],
         ['\u203E', '~'],
         ['\u301C', '～'],
         ['\u49FA', 'ê'],
